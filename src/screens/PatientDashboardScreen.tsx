@@ -25,7 +25,7 @@ const PatientDashboardScreen: React.FC = () => {
     <Container>
       <Header />
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Title>Minhas Consultas</Title>
+        <Title>Meu Perfil</Title>
 
         <Button
           title="Questionário"

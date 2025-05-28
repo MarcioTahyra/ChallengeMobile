@@ -9,8 +9,6 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import CreateAppointmentScreen from '../screens/CreateAppointmentScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import AdminDashboardScreen from '../screens/AdminDashboardScreen';
-import DoctorDashboardScreen from '../screens/DoctorDashboardScreen';
 import PatientDashboardScreen from '../screens/PatientDashboardScreen';
 import InvestmentSuggestionsScreen from '../screens/InvestmentSuggestionsScreen';
 import MyPortfolioScreen from '../screens/MyPortfolioScreen'; // ajuste o caminho conforme sua estrutura
