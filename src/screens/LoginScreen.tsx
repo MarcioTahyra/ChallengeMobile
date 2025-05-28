@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
-import { Input, Button, Text } from 'react-native-elements';
+import { Input, Button } from 'react-native-elements';
 import { useAuth } from '../context/AuthContext';
 import theme from '../styles/theme';
-import { ViewStyle } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
@@ -19,6 +19,7 @@ const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { width } = useWindowDimensions();
 
   const handleLogin = async () => {
     try {
@@ -32,78 +33,70 @@ const LoginScreen: React.FC = () => {
     }
   };
 
+  const maxWidth = width > 500 ? 400 : '100%'; // Limita o tamanho em telas maiores
+
   return (
     <Container>
-      <Title class='title'>Login</Title>
-      
-      <Input
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-        containerStyle={styles.input}
-        inputStyle={{ color: '#ffffff' }}
-      />
+      <Title fontSize={width > 500 ? 48 : 38}>Login</Title>
 
-      <Input
-        placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        containerStyle={styles.input}
-        inputStyle={{ color: '#ffffff' }}
-      />
+      <Content style={{ maxWidth, alignSelf: 'center' }}>
+        <Input
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          inputStyle={{ color: '#ffffff', fontSize: 16 }}
+          containerStyle={{ marginBottom: 15 }}
+        />
 
-      {error ? <ErrorText>{error}</ErrorText> : null}
+        <Input
+          placeholder="Senha"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          inputStyle={{ color: '#ffffff', fontSize: 16 }}
+          containerStyle={{ marginBottom: 15 }}
+        />
 
-      <Button
-        title="Entrar"
-        onPress={handleLogin}
-        loading={loading}
-        containerStyle={styles.button as ViewStyle}
-        buttonStyle={styles.buttonStyle}
-        titleStyle={styles.buttonTitleStyle}
-      />
+        {error ? <ErrorText>{error}</ErrorText> : null}
 
-      <Button
-        title="Cadastrar"
-        onPress={() => navigation.navigate('Register')}
-        containerStyle={styles.registerButton as ViewStyle}
-        buttonStyle={styles.registerButtonStyle}
-        titleStyle={styles.buttonTitleStyle}
-      />
+        <Button
+          title="Entrar"
+          onPress={handleLogin}
+          loading={loading}
+          containerStyle={{ marginTop: 10, width: '100%' }}
+          buttonStyle={{
+            backgroundColor: theme.colors.primary,
+            paddingVertical: 12,
+          }}
+          titleStyle={{
+            color: theme.colors.btntext,
+            fontWeight: 'bold',
+            fontSize: 20,
+          }}
+        />
+
+        <Button
+          title="Cadastrar"
+          onPress={() => navigation.navigate('Register')}
+          containerStyle={{ marginTop: 10, width: '100%' }}
+          buttonStyle={{
+            backgroundColor: theme.colors.primary,
+            paddingVertical: 12,
+          }}
+          titleStyle={{
+            color: theme.colors.btntext,
+            fontWeight: 'bold',
+            fontSize: 20,
+          }}
+        />
+      </Content>
     </Container>
   );
 };
 
-const styles = {
-  input: {
-    marginBottom: 15,
-  },
-  button: {
-    marginTop: 10,
-    width: '100%',
-  },
-  buttonStyle: {
-    backgroundColor: theme.colors.primary,
-    paddingVertical: 12,
-  },
-  buttonTitleStyle: {
-  color: theme.colors.btntext, 
-  fontWeight: 'bold',
-  fontSize: 23,
-  },  
-  registerButton: {
-    marginTop: 10,
-    width: '100%',
-  },
-  registerButtonStyle: {
-    backgroundColor: theme.colors.primary,
-    paddingVertical: 12,
-  }
-};
-
+// Container principal
 const Container = styled.View`
   flex: 1;
   padding: 20px;
@@ -111,18 +104,25 @@ const Container = styled.View`
   background-color: ${theme.colors.background};
 `;
 
-const Title = styled.Text`
-  font-size: 50px;
+// Título com tamanho variável
+const Title = styled.Text<{ fontSize: number }>`
+  font-size: ${({ fontSize }) => fontSize}px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
   color: ${theme.colors.title};
 `;
 
+// Wrapper com largura máxima
+const Content = styled.View`
+  width: 100%;
+`;
+
+// Texto de erro
 const ErrorText = styled.Text`
   color: ${theme.colors.error};
   text-align: center;
   margin-bottom: 10px;
 `;
 
-export default LoginScreen; 
+export default LoginScreen;

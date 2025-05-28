@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ScrollView, ActivityIndicator, Alert } from 'react-native';
+import { ScrollView, ActivityIndicator, Alert, useWindowDimensions } from 'react-native';
 import theme from '../styles/theme';
 import Header from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
@@ -34,6 +34,7 @@ const InvestmentSuggestionsScreen: React.FC = () => {
   const [profile, setProfile] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -83,15 +84,17 @@ const InvestmentSuggestionsScreen: React.FC = () => {
     <Container>
       <Header />
       <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <Title>Sugestões de Investimento</Title>
-        <Subtitle>Perfil identificado: <Bold>{profile}</Bold></Subtitle>
+        <Title responsiveWidth={width}>Sugestões de Investimento</Title>
+        <Subtitle responsiveWidth={width}>
+          Perfil identificado: <Bold>{profile}</Bold>
+        </Subtitle>
 
-        <SectionTitle>Escolha uma carteira:</SectionTitle>
+        <SectionTitle responsiveWidth={width}>Escolha uma carteira:</SectionTitle>
         {availablePortfolios.map((portfolio, index) => (
-          <PortfolioCard key={index} onPress={() => handleSelectPortfolio(portfolio)}>
-            <PortfolioTitle>{portfolio.nome}</PortfolioTitle>
+          <PortfolioCard key={index} onPress={() => handleSelectPortfolio(portfolio)} responsiveWidth={width}>
+            <PortfolioTitle responsiveWidth={width}>{portfolio.nome}</PortfolioTitle>
             {portfolio.ativos.map((ativo, i) => (
-              <PortfolioItem key={i}>• {ativo}</PortfolioItem>
+              <PortfolioItem key={i} responsiveWidth={width}>• {ativo}</PortfolioItem>
             ))}
           </PortfolioCard>
         ))}
@@ -112,22 +115,22 @@ const InvestmentSuggestionsScreen: React.FC = () => {
   );
 };
 
-// Styled Components
+// Styled Components com responsividade
 const Container = styled.View`
   flex: 1;
   background-color: ${theme.colors.background};
 `;
 
-const Title = styled.Text`
-  font-size: 24px;
+const Title = styled.Text<{ responsiveWidth: number }>`
+  font-size: ${({ responsiveWidth }) => (responsiveWidth > 600 ? '28px' : '22px')};
   font-weight: bold;
   text-align: center;
   color: ${theme.colors.text};
   margin-bottom: 10px;
 `;
 
-const Subtitle = styled.Text`
-  font-size: 18px;
+const Subtitle = styled.Text<{ responsiveWidth: number }>`
+  font-size: ${({ responsiveWidth }) => (responsiveWidth > 600 ? '20px' : '16px')};
   text-align: center;
   margin-bottom: 20px;
   color: ${theme.colors.text};
@@ -138,29 +141,29 @@ const Bold = styled.Text`
   color: ${theme.colors.primary};
 `;
 
-const SectionTitle = styled.Text`
-  font-size: 20px;
+const SectionTitle = styled.Text<{ responsiveWidth: number }>`
+  font-size: ${({ responsiveWidth }) => (responsiveWidth > 600 ? '22px' : '18px')};
   font-weight: bold;
   margin-bottom: 15px;
   color: ${theme.colors.text};
 `;
 
-const PortfolioCard = styled.TouchableOpacity`
+const PortfolioCard = styled.TouchableOpacity<{ responsiveWidth: number }>`
   background-color: ${theme.colors.card};
-  padding: 15px;
+  padding: ${({ responsiveWidth }) => (responsiveWidth > 600 ? '20px' : '15px')};
   border-radius: 10px;
   margin-bottom: 15px;
 `;
 
-const PortfolioTitle = styled.Text`
-  font-size: 18px;
+const PortfolioTitle = styled.Text<{ responsiveWidth: number }>`
+  font-size: ${({ responsiveWidth }) => (responsiveWidth > 600 ? '20px' : '18px')};
   font-weight: bold;
   color: ${theme.colors.primary};
   margin-bottom: 10px;
 `;
 
-const PortfolioItem = styled.Text`
-  font-size: 16px;
+const PortfolioItem = styled.Text<{ responsiveWidth: number }>`
+  font-size: ${({ responsiveWidth }) => (responsiveWidth > 600 ? '18px' : '16px')};
   color: ${theme.colors.text};
 `;
 

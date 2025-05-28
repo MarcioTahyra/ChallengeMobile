@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ScrollView, ActivityIndicator } from 'react-native';
+import { ScrollView, ActivityIndicator, useWindowDimensions } from 'react-native';
 import Header from '../components/Header';
 import theme from '../styles/theme';
 import { Button } from 'react-native-elements';
@@ -63,6 +63,8 @@ const ProfileEvaluationScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState('');
   const navigation = useNavigation();
+  const { width } = useWindowDimensions();
+  const maxWidth = width > 500 ? 400 : '100%';
 
   useEffect(() => {
     const loadAnswers = async () => {
@@ -103,23 +105,25 @@ const ProfileEvaluationScreen: React.FC = () => {
   return (
     <Container>
       <Header />
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <Title>Seu Perfil de Investidor</Title>
-        <ProfileBox>
-          <ProfileText>{profile}</ProfileText>
-        </ProfileBox>
+      <ScrollView contentContainerStyle={{ padding: 20, alignItems: 'center' }}>
+        <Content style={{ maxWidth }}>
+          <Title>Seu Perfil de Investidor</Title>
+          <ProfileBox>
+            <ProfileText>{profile}</ProfileText>
+          </ProfileBox>
 
-        <Subtitle>Respostas do Questionário:</Subtitle>
-        {questions.map((q) => (
-          <QuestionBlock key={q.id}>
-            <QuestionText>{q.text}</QuestionText>
-            <AnswerText>
-              {answers[q.id] !== undefined
-                ? q.options[answers[q.id]]
-                : 'Não respondido'}
-            </AnswerText>
-          </QuestionBlock>
-        ))}
+          <Subtitle>Respostas do Questionário:</Subtitle>
+          {questions.map((q) => (
+            <QuestionBlock key={q.id}>
+              <QuestionText>{q.text}</QuestionText>
+              <AnswerText>
+                {answers[q.id] !== undefined
+                  ? q.options[answers[q.id]]
+                  : 'Não respondido'}
+              </AnswerText>
+            </QuestionBlock>
+          ))}
+        </Content>
       </ScrollView>
 
       <Footer>
@@ -143,6 +147,10 @@ export default ProfileEvaluationScreen;
 const Container = styled.View`
   flex: 1;
   background-color: ${theme.colors.background};
+`;
+
+const Content = styled.View`
+  width: 100%;
 `;
 
 const Title = styled.Text`
@@ -200,4 +208,3 @@ const LoadingContainer = styled.View`
   justify-content: center;
   align-items: center;
 `;
-

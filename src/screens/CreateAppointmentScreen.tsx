@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, ScrollView, View } from 'react-native';
+import { Alert, ScrollView, View, useWindowDimensions } from 'react-native';
 import { Button } from 'react-native-elements';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -65,6 +65,8 @@ const questions: Question[] = [
 const CreateAppointmentScreen: React.FC = () => {
   const navigation = useNavigation<CreateAppointmentScreenProps['navigation']>();
   const [answers, setAnswers] = useState<Record<string, number>>({});
+  const { width } = useWindowDimensions();
+  const isLargeScreen = width > 768;
 
   const handleSelectOption = (questionId: string, optionIndex: number) => {
     setAnswers((prev) => ({
@@ -86,39 +88,41 @@ const CreateAppointmentScreen: React.FC = () => {
   return (
     <Container>
       <Header />
-      <Title>Fazer Questionário</Title>
-      <ScrollView contentContainerStyle={{ paddingBottom: 150 }}>
-        {questions.map((question) => (
-          <QuestionContainer key={question.id}>
-            <QuestionText>{question.text}</QuestionText>
-            {question.options.map((option, index) => {
-              const selected = answers[question.id] === index;
-              return (
-                <OptionButton
-                  key={index}
-                  selected={selected}
-                  onPress={() => handleSelectOption(question.id, index)}
-                >
-                  <OptionText selected={selected}>{option}</OptionText>
-                </OptionButton>
-              );
-            })}
-          </QuestionContainer>
-        ))}
+      <ContentWrapper isLargeScreen={isLargeScreen}>
+        <Title>Fazer Questionário</Title>
+        <ScrollView contentContainerStyle={{ paddingBottom: 150 }}>
+          {questions.map((question) => (
+            <QuestionContainer key={question.id}>
+              <QuestionText>{question.text}</QuestionText>
+              {question.options.map((option, index) => {
+                const selected = answers[question.id] === index;
+                return (
+                  <OptionButton
+                    key={index}
+                    selected={selected}
+                    onPress={() => handleSelectOption(question.id, index)}
+                  >
+                    <OptionText selected={selected}>{option}</OptionText>
+                  </OptionButton>
+                );
+              })}
+            </QuestionContainer>
+          ))}
 
-        <View style={{ alignItems: 'center', marginBottom: 40 }}>
-          <Button
-            title="Enviar"
-            onPress={handleSubmit}
-            buttonStyle={{
-              backgroundColor: theme.colors.primary,
-              paddingVertical: 10,
-              paddingHorizontal: 40,
-            }}
-            containerStyle={{ marginTop: 10 }}
-          />
-        </View>
-      </ScrollView>
+          <View style={{ alignItems: 'center', marginBottom: 40 }}>
+            <Button
+              title="Enviar"
+              onPress={handleSubmit}
+              buttonStyle={{
+                backgroundColor: theme.colors.primary,
+                paddingVertical: 10,
+                paddingHorizontal: 40,
+              }}
+              containerStyle={{ marginTop: 10 }}
+            />
+          </View>
+        </ScrollView>
+      </ContentWrapper>
 
       <FixedFooter>
         <Button
@@ -134,6 +138,8 @@ const CreateAppointmentScreen: React.FC = () => {
 
 export default CreateAppointmentScreen;
 
+// Estilização responsiva
+
 const styles = {
   button: {
     width: '33%',
@@ -147,6 +153,12 @@ const styles = {
 const Container = styled.View`
   flex: 1;
   background-color: ${theme.colors.background};
+`;
+
+const ContentWrapper = styled.View<{ isLargeScreen: boolean }>`
+  flex: 1;
+  width: ${({ isLargeScreen }) => (isLargeScreen ? '70%' : '100%')};
+  align-self: center;
 `;
 
 const Title = styled.Text`

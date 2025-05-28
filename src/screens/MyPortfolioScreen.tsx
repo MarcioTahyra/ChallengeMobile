@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
-import { ScrollView, ActivityIndicator } from 'react-native';
+import { ScrollView, ActivityIndicator, useWindowDimensions } from 'react-native';
 import { Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from '../components/Header';
@@ -16,6 +16,8 @@ const MyPortfolioScreen: React.FC = () => {
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+  const { width } = useWindowDimensions();
+  const maxWidth = width > 500 ? 400 : '100%';
 
   useEffect(() => {
     const loadPortfolio = async () => {
@@ -45,19 +47,21 @@ const MyPortfolioScreen: React.FC = () => {
   return (
     <Container>
       <Header />
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <Title>Minha Carteira</Title>
+      <ScrollView contentContainerStyle={{ padding: 20, alignItems: 'center' }}>
+        <Content style={{ maxWidth }}>
+          <Title>Minha Carteira</Title>
 
-        {portfolio ? (
-          <>
-            <PortfolioTitle>{portfolio.nome}</PortfolioTitle>
-            {portfolio.ativos.map((ativo, index) => (
-              <PortfolioItem key={index}>• {ativo}</PortfolioItem>
-            ))}
-          </>
-        ) : (
-          <NoDataText>Nenhuma carteira selecionada.</NoDataText>
-        )}
+          {portfolio ? (
+            <>
+              <PortfolioTitle>{portfolio.nome}</PortfolioTitle>
+              {portfolio.ativos.map((ativo, index) => (
+                <PortfolioItem key={index}>• {ativo}</PortfolioItem>
+              ))}
+            </>
+          ) : (
+            <NoDataText>Nenhuma carteira selecionada.</NoDataText>
+          )}
+        </Content>
       </ScrollView>
 
       <Footer>
@@ -79,6 +83,10 @@ const MyPortfolioScreen: React.FC = () => {
 const Container = styled.View`
   flex: 1;
   background-color: ${theme.colors.background};
+`;
+
+const Content = styled.View`
+  width: 100%;
 `;
 
 const Title = styled.Text`
