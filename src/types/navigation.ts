@@ -7,22 +7,22 @@
  * @property Login - Tela de login
  * @property Register - Tela de registro
  * @property Home - Tela inicial da aplicação
- * @property CreateAppointment - Tela de criação de consulta
+ * @property Questions - Tela de criação de consulta
  * @property Profile - Tela de perfil do usuário
  * @property AdminDashboard - Tela do painel de administração
  * @property DoctorDashboard - Tela do painel do médico
- * @property PatientDashboard - Tela do painel do paciente
+ * @property UserDashboard - Tela do painel do paciente
  * @property UserManagement - Tela de gerenciamento de usuários
  */
 export type RootStackParamList = {
     Login: undefined;
     Register: undefined;
     Home: undefined;
-    CreateAppointment: undefined;
+    Questions: undefined;
     Profile: undefined;
-    AdminDashboard: undefined;
-    DoctorDashboard: undefined;
-    PatientDashboard: undefined;
+    // AdminDashboard: undefined;
+    // DoctorDashboard: undefined;
+    UserDashboard: undefined;
     UserManagement: undefined;
     InvestmentSuggestions: undefined;
     MyPortfolio: undefined;

@@ -3,10 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authService } from '../services/auth';
 import { User, LoginCredentials, RegisterData, AuthContextData } from '../types/auth';
 
-// Chaves de armazenamento
 const STORAGE_KEYS = {
-  USER: '@MedicalApp:user',
-  TOKEN: '@MedicalApp:token',
+  USER: '@InvestApp:user',
+  TOKEN: '@InvestApp:token',
 };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);

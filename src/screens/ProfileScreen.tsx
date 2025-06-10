@@ -69,7 +69,7 @@ const ProfileEvaluationScreen: React.FC = () => {
   useEffect(() => {
     const loadAnswers = async () => {
       try {
-        const data = await AsyncStorage.getItem('@MedicalApp:questionnaireAnswers');
+        const data = await AsyncStorage.getItem('@InvestApp:questionnaireAnswers');
         if (data) {
           const parsed: Answers = JSON.parse(data);
           setAnswers(parsed);

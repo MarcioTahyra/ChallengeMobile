@@ -39,7 +39,7 @@ const InvestmentSuggestionsScreen: React.FC = () => {
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        const answersData = await AsyncStorage.getItem('@MedicalApp:questionnaireAnswers');
+        const answersData = await AsyncStorage.getItem('@InvestApp:questionnaireAnswers');
         if (answersData) {
           const answers = JSON.parse(answersData) as Record<string, number>;
           const total = Object.values(answers).reduce((sum, val) => sum + (val + 1), 0);
@@ -61,7 +61,7 @@ const InvestmentSuggestionsScreen: React.FC = () => {
 
   const handleSelectPortfolio = async (portfolio: Portfolio) => {
     try {
-      await AsyncStorage.setItem('@MedicalApp:selectedPortfolio', JSON.stringify(portfolio));
+      await AsyncStorage.setItem('@InvestApp:selectedPortfolio', JSON.stringify(portfolio));
       Alert.alert('Sucesso', `Carteira "${portfolio.nome}" salva com sucesso!`);
       navigation.goBack();
     } catch (error) {

@@ -33,7 +33,7 @@ const LoginScreen: React.FC = () => {
     }
   };
 
-  const maxWidth = width > 500 ? 400 : '100%'; // Limita o tamanho em telas maiores
+  const maxWidth = width > 500 ? 400 : '100%';
 
   return (
     <Container>

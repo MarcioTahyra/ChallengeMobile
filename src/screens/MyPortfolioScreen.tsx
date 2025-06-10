@@ -22,7 +22,7 @@ const MyPortfolioScreen: React.FC = () => {
   useEffect(() => {
     const loadPortfolio = async () => {
       try {
-        const stored = await AsyncStorage.getItem('@MedicalApp:selectedPortfolio');
+        const stored = await AsyncStorage.getItem('@InvestApp:selectedPortfolio');
         if (stored) {
           setPortfolio(JSON.parse(stored));
         }

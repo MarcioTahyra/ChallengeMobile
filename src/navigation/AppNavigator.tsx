@@ -7,11 +7,11 @@ import { RootStackParamList } from '../types/navigation';
 // Screens
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
-import CreateAppointmentScreen from '../screens/CreateAppointmentScreen';
+import QuestionsScreen from '../screens/QuestionsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import PatientDashboardScreen from '../screens/PatientDashboardScreen';
+import UserDashboardScreen from '../screens/UserDashboardScreen';
 import InvestmentSuggestionsScreen from '../screens/InvestmentSuggestionsScreen';
-import MyPortfolioScreen from '../screens/MyPortfolioScreen'; // ajuste o caminho conforme sua estrutura
+import MyPortfolioScreen from '../screens/MyPortfolioScreen';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -20,7 +20,7 @@ export const AppNavigator: React.FC = () => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return null; // Ou um componente de loading
+    return null;
   }
 
   return (
@@ -31,47 +31,25 @@ export const AppNavigator: React.FC = () => {
         }}
       >
         {!user ? (
-          // Rotas públicas
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
           </>
         ) : (
-          // Rotas protegidas
-          <>
-            {user.role === 'admin' && (
-              <Stack.Screen 
-                name="AdminDashboard" 
-                component={AdminDashboardScreen}
-                options={{ title: 'Painel Administrativo' }}
-              />
-            )}
-            
-            {user.role === 'doctor' && (
-              <Stack.Screen 
-                name="DoctorDashboard" 
-                component={DoctorDashboardScreen}
-                options={{ title: 'Painel do Médico' }}
-              />
-            )}
-            
-            {user.role === 'patient' && (
-              <Stack.Screen 
-                name="PatientDashboard" 
-                component={PatientDashboardScreen}
-                options={{ title: 'Painel do Paciente' }}
-              />
-            )}
-
-            {/* Rotas comuns para todos os usuários autenticados */}
+          <>       
+            <Stack.Screen 
+              name="UserDashboard" 
+              component={UserDashboardScreen}
+              options={{ title: 'Painel do Paciente' }}
+            />
             <Stack.Screen 
               name="Home" 
               component={InvestmentSuggestionsScreen}
               options={{ title: 'Início' }}
             />
             <Stack.Screen 
-              name="CreateAppointment" 
-              component={CreateAppointmentScreen}
+              name="Questions" 
+              component={QuestionsScreen}
               options={{ title: 'Agendar Consulta' }}
             />
             <Stack.Screen 

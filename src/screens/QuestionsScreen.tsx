@@ -8,9 +8,11 @@ import Header from '../components/Header';
 import theme from '../styles/theme';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
+import QuestionItem from '../components/QuestionItem';
 
-type CreateAppointmentScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'CreateAppointment'>;
+
+type QuestionsProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Questions'>;
 };
 
 type Question = {
@@ -62,8 +64,8 @@ const questions: Question[] = [
   },
 ];
 
-const CreateAppointmentScreen: React.FC = () => {
-  const navigation = useNavigation<CreateAppointmentScreenProps['navigation']>();
+const QuestionsScreen: React.FC = () => {
+  const navigation = useNavigation<QuestionsProps['navigation']>();
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const { width } = useWindowDimensions();
   const isLargeScreen = width > 768;
@@ -77,7 +79,7 @@ const CreateAppointmentScreen: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      await AsyncStorage.setItem('@MedicalApp:questionnaireAnswers', JSON.stringify(answers));
+      await AsyncStorage.setItem('@InvestApp:questionnaireAnswers', JSON.stringify(answers));
       Alert.alert('Sucesso', 'Respostas salvas com sucesso!');
       navigation.goBack();
     } catch (err) {
@@ -92,22 +94,16 @@ const CreateAppointmentScreen: React.FC = () => {
         <Title>Fazer Questionário</Title>
         <ScrollView contentContainerStyle={{ paddingBottom: 150 }}>
           {questions.map((question) => (
-            <QuestionContainer key={question.id}>
-              <QuestionText>{question.text}</QuestionText>
-              {question.options.map((option, index) => {
-                const selected = answers[question.id] === index;
-                return (
-                  <OptionButton
-                    key={index}
-                    selected={selected}
-                    onPress={() => handleSelectOption(question.id, index)}
-                  >
-                    <OptionText selected={selected}>{option}</OptionText>
-                  </OptionButton>
-                );
-              })}
-            </QuestionContainer>
+            <QuestionItem
+              key={question.id}
+              id={question.id}
+              text={question.text}
+              options={question.options}
+              selectedOptionIndex={answers[question.id]}
+              onSelect={handleSelectOption}
+            />
           ))}
+
 
           <View style={{ alignItems: 'center', marginBottom: 40 }}>
             <Button
@@ -135,8 +131,6 @@ const CreateAppointmentScreen: React.FC = () => {
     </Container>
   );
 };
-
-export default CreateAppointmentScreen;
 
 // Estilização responsiva
 
@@ -204,3 +198,5 @@ const FixedFooter = styled.View`
   right: 0;
   align-items: center;
 `;
+
+export default QuestionsScreen;

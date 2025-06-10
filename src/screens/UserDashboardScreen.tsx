@@ -9,13 +9,13 @@ import { RootStackParamList } from '../types/navigation';
 import theme from '../styles/theme';
 import Header from '../components/Header';
 
-type PatientDashboardScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'PatientDashboard'>;
+type UserDashboardScreenProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'UserDashboard'>;
 };
 
-const PatientDashboardScreen: React.FC = () => {
+const UserDashboardScreen: React.FC = () => {
   const { user, signOut } = useAuth();
-  const navigation = useNavigation<PatientDashboardScreenProps['navigation']>();
+  const navigation = useNavigation<UserDashboardScreenProps['navigation']>();
   const [loading, setLoading] = useState(true);
   const { width } = useWindowDimensions();
   const maxWidth = width > 500 ? 400 : '100%';
@@ -29,7 +29,7 @@ const PatientDashboardScreen: React.FC = () => {
 
           <Button
             title="Questionário"
-            onPress={() => navigation.navigate('CreateAppointment')}
+            onPress={() => navigation.navigate('Questions')}
             containerStyle={styles.button as ViewStyle}
             buttonStyle={styles.buttonStyle}
             titleStyle={styles.buttonTitleStyle}
@@ -115,4 +115,4 @@ const FixedFooter = styled.View`
   background-color: ${theme.colors.background};
 `;
 
-export default PatientDashboardScreen;
+export default UserDashboardScreen;
