@@ -20,8 +20,6 @@ export type RootStackParamList = {
     Home: undefined;
     Questions: undefined;
     Profile: undefined;
-    // AdminDashboard: undefined;
-    // DoctorDashboard: undefined;
     UserDashboard: undefined;
     UserManagement: undefined;
     InvestmentSuggestions: undefined;
