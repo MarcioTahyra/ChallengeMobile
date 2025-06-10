@@ -2,70 +2,66 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User, LoginCredentials, RegisterData, AuthResponse } from '../types/auth';
 
 const STORAGE_KEYS = {
+  REGISTERED_USERS: '@InvestApp:registeredUsers',
   USER: '@InvestApp:user',
   TOKEN: '@InvestApp:token',
-  REGISTERED_USERS: '@InvestApp:registeredUsers',
 };
 
 let registeredUsers: User[] = [];
 
+async function getRegisteredUsers(): Promise<User[]> {
+  const data = await AsyncStorage.getItem(STORAGE_KEYS.REGISTERED_USERS);
+  return data ? JSON.parse(data) : [];
+}
+
+async function setRegisteredUsers(users: User[]) {
+  await AsyncStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(users));
+  registeredUsers = users;
+}
+
 export const authService = {
   async signIn(credentials: LoginCredentials): Promise<AuthResponse> {
-    if (credentials.email === mockAdmin.email && credentials.password === '123456') {
-      return {
-        user: mockAdmin,
-        token: 'admin-token',
-      };
+    // Garante que os usuários estejam carregados
+    if (registeredUsers.length === 0) {
+      registeredUsers = await getRegisteredUsers();
     }
 
-    const doctor = mockDoctors.find(
-      (d) => d.email === credentials.email && credentials.password === '123456'
+    const user = registeredUsers.find(
+      (u) => u.email === credentials.email && u.password === credentials.password
     );
-    if (doctor) {
-      return {
-        user: doctor,
-        token: `doctor-token-${doctor.id}`,
-      };
+
+    if (!user) {
+      throw new Error('Email ou senha inválidos');
     }
 
-    const patient = registeredUsers.find(
-      (p) => p.email === credentials.email && p.password === credentials.password
-    );
-    if (patient) {
-      return {
-        user: patient,
-        token: `patient-token-${patient.id}`,
-      };
-    }
-
-    throw new Error('Email ou senha inválidos');
+    return {
+      user,
+      token: `token-${user.id}`,
+    };
   },
 
   async register(data: RegisterData): Promise<AuthResponse> {
-    const emailExists =
-      mockDoctors.some((d) => d.email === data.email) ||
-      mockAdmin.email === data.email ||
-      registeredUsers.some((u) => u.email === data.email);
+    const users = await getRegisteredUsers();
 
+    const emailExists = users.some((u) => u.email === data.email);
     if (emailExists) {
       throw new Error('Email já está em uso');
     }
 
-    const newPatient: User = {
-      id: `patient-${registeredUsers.length + 1}`,
+    const newUser: User = {
+      id: `patient-${users.length + 1}`,
       name: data.name,
       email: data.email,
+      password: data.password,
       role: 'patient',
-      image: `https://randomuser.me/api/portraits/${registeredUsers.length % 2 === 0 ? 'men' : 'women'}/${registeredUsers.length + 1}.jpg`,
-      password: data.password, // salva a senha
     };
 
-    registeredUsers.push(newPatient);
-    await AsyncStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(registeredUsers));
+    const updatedUsers = [...users, newUser];
+    await setRegisteredUsers(updatedUsers);
 
     return {
-      user: newPatient,
-      token: `patient-token-${newPatient.id}`,
+      user: newUser,
+      token: `token-${newUser.id}`,
     };
   },
 
@@ -77,26 +73,11 @@ export const authService = {
   async getStoredUser(): Promise<User | null> {
     try {
       const userJson = await AsyncStorage.getItem(STORAGE_KEYS.USER);
-      if (userJson) {
-        return JSON.parse(userJson);
-      }
-      return null;
+      return userJson ? JSON.parse(userJson) : null;
     } catch (error) {
       console.error('Erro ao obter usuário armazenado:', error);
       return null;
     }
-  },
-
-  async getAllUsers(): Promise<User[]> {
-    return [...mockDoctors, ...registeredUsers];
-  },
-
-  async getAllDoctors(): Promise<User[]> {
-    return mockDoctors;
-  },
-
-  async getPatients(): Promise<User[]> {
-    return registeredUsers;
   },
 
   async loadRegisteredUsers(): Promise<void> {
@@ -108,5 +89,9 @@ export const authService = {
     } catch (error) {
       console.error('Erro ao carregar usuários registrados:', error);
     }
+  },
+
+  async getAllUsers(): Promise<User[]> {
+    return getRegisteredUsers();
   },
 };

@@ -21,19 +21,28 @@ const LoginScreen: React.FC = () => {
   const [error, setError] = useState('');
   const { width } = useWindowDimensions();
 
+  const maxWidth = width > 500 ? 400 : '100%';
+
   const handleLogin = async () => {
     try {
       setLoading(true);
       setError('');
+
+      if (!email || !password) {
+        setError('Preencha todos os campos');
+        return;
+      }
+
       await signIn({ email, password });
+
+      // Aqui você pode redirecionar, ex: para 'Home':
+      // navigation.navigate('Home');
     } catch (err) {
       setError('Email ou senha inválidos');
     } finally {
       setLoading(false);
     }
   };
-
-  const maxWidth = width > 500 ? 400 : '100%';
 
   return (
     <Container>

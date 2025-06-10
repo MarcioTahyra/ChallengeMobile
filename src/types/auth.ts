@@ -1,73 +1,31 @@
-/**
- * Tipos relacionados à autenticação e autorização
- */
-/**
- * Perfis de usuário disponíveis no sistema
- */
-export type UserRole = 'admin' | 'doctor' | 'patient';
-/**
- * Interface base do usuário
- */
-export interface BaseUser {
+export type User = {
   id: string;
   name: string;
   email: string;
-  role: UserRole;
-  image: string;
-  password?: string;
-}
-/**
- * Interface do médico
- */
-export interface Doctor extends BaseUser {
-  role: 'doctor';
-  specialty: string;
-}
-/**
- * Interface do paciente
- */
-export interface Patient extends BaseUser {
+  password: string;
   role: 'patient';
-}
-/**
- * Interface do administrador
- */
-export interface Admin extends BaseUser {
-  role: 'admin';
-}
-/**
- * Interface do usuário autenticado
- */
-export type User = Admin | Doctor | Patient;
-/**
- * Dados necessários para login
- */
-export interface LoginCredentials {
+};
+
+export type LoginCredentials = {
   email: string;
   password: string;
-}
-/**
- * Dados necessários para registro
- */
-export interface RegisterData {
+};
+
+export type RegisterData = {
   name: string;
   email: string;
   password: string;
-}
-/**
- * Resposta da API de autenticação
- */
-export interface AuthResponse {
+};
+
+export type AuthResponse = {
   user: User;
   token: string;
-}
-/**
- * Contexto de autenticação
- */
-export interface AuthContextData {
+};
+
+export type AuthContextData = {
   user: User | null;
   loading: boolean;
   signIn: (credentials: LoginCredentials) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   signOut: () => Promise<void>;
-}
+};
