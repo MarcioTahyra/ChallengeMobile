@@ -3,7 +3,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  role: 'patient';
+  role: 'user';
 };
 
 export type LoginCredentials = {

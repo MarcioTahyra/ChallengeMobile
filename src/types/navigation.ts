@@ -9,8 +9,6 @@
  * @property Home - Tela inicial da aplicação
  * @property Questions - Tela de criação de consulta
  * @property Profile - Tela de perfil do usuário
- * @property AdminDashboard - Tela do painel de administração
- * @property DoctorDashboard - Tela do painel do médico
  * @property UserDashboard - Tela do painel do paciente
  * @property UserManagement - Tela de gerenciamento de usuários
  */

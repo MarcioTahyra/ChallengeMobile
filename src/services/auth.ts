@@ -49,11 +49,11 @@ export const authService = {
     }
 
     const newUser: User = {
-      id: `patient-${users.length + 1}`,
+      id: `user-${users.length + 1}`,
       name: data.name,
       email: data.email,
       password: data.password,
-      role: 'patient',
+      role: 'user',
     };
 
     const updatedUsers = [...users, newUser];
