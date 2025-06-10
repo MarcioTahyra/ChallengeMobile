@@ -1,17 +1,14 @@
 /**
- * Tipos relacionados à navegação
- * Este arquivo contém todas as definições de tipos necessárias para a navegação entre telas
- */
-/**
  * Define as rotas disponíveis na aplicação e seus parâmetros
  * @property Login - Tela de login
  * @property Register - Tela de registro
  * @property Home - Tela inicial da aplicação
- * @property Questions - Tela de criação de consulta
+ * @property Questions - Tela do questionário
  * @property Profile - Tela de perfil do usuário
- * @property UserDashboard - Tela do painel do paciente
+ * @property UserDashboard - Tela do painel do Usuário
  * @property UserManagement - Tela de gerenciamento de usuários
  */
+
 export type RootStackParamList = {
     Login: undefined;
     Register: undefined;

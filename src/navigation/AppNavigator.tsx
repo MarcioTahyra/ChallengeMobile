@@ -40,7 +40,7 @@ export const AppNavigator: React.FC = () => {
             <Stack.Screen 
               name="UserDashboard" 
               component={UserDashboardScreen}
-              options={{ title: 'Painel do Paciente' }}
+              options={{ title: 'Painel do Usuário' }}
             />
             <Stack.Screen 
               name="Home" 
@@ -50,7 +50,7 @@ export const AppNavigator: React.FC = () => {
             <Stack.Screen 
               name="Questions" 
               component={QuestionsScreen}
-              options={{ title: 'Agendar Consulta' }}
+              options={{ title: 'Questionário' }}
             />
             <Stack.Screen 
               name="Profile" 
